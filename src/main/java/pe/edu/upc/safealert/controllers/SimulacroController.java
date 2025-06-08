@@ -20,7 +20,7 @@ public class SimulacroController {
     @Autowired
     private ISimulacroService sS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<SimulacroDTO> listarSimulacros() {
         log.info("Solicitud GET para listar todos los simulacros");
         return sS.list().stream().map(x -> {
@@ -29,7 +29,7 @@ public class SimulacroController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody SimulacroDTO sDTO) {
         log.info("Solicitud POST para insertar simulacro: {}", sDTO);
@@ -39,21 +39,21 @@ public class SimulacroController {
         log.debug("Simulacro insertado correctamente");
     }
 
-    @GetMapping("/{idSimulacro}")
+    @GetMapping("/list/{idSimulacro}")
     public SimulacroDTO listarId(@PathVariable("idSimulacro") int idSimulacro) {
         log.info("Solicitud GET para obtener simulacro con ID: {}", idSimulacro);
         ModelMapper m = new ModelMapper();
         return m.map(sS.listarId(idSimulacro), SimulacroDTO.class);
     }
 
-    @DeleteMapping("/{idSimulacro}")
+    @DeleteMapping("/delete/{idSimulacro}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idSimulacro") int idSimulacro) {
         log.warn("Solicitud DELETE para eliminar simulacro con ID: {}", idSimulacro);
         sS.delete(idSimulacro);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody SimulacroDTO sDTO) {
         log.info("Solicitud PUT para modificar simulacro: {}", sDTO);

@@ -20,7 +20,7 @@ public class UbicacionController {
     @Autowired
     private IUbicacionService uS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<UbicacionDTO> listarUbicaciones() {
         log.info("Solicitud GET para listar todas las ubicaciones");
         return uS.list().stream().map(x -> {
@@ -29,7 +29,7 @@ public class UbicacionController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody UbicacionDTO uDTO) {
         log.info("Solicitud POST para insertar una nueva ubicación: {}", uDTO);
@@ -39,21 +39,21 @@ public class UbicacionController {
         log.debug("Ubicación insertada exitosamente");
     }
 
-    @GetMapping("/{idUbicacion}")
+    @GetMapping("/list/{idUbicacion}")
     public UbicacionDTO listarId(@PathVariable("idUbicacion") int idUbicacion) {
         log.info("Solicitud GET para obtener ubicación con ID: {}", idUbicacion);
         ModelMapper m = new ModelMapper();
         return m.map(uS.listarId(idUbicacion), UbicacionDTO.class);
     }
 
-    @DeleteMapping("/{idUbicacion}")
+    @DeleteMapping("/delete/{idUbicacion}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idUbicacion") int idUbicacion) {
         log.warn("Solicitud DELETE para eliminar ubicación con ID: {}", idUbicacion);
         uS.delete(idUbicacion);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody UbicacionDTO uDTO) {
         log.info("Solicitud PUT para modificar ubicación: {}", uDTO);

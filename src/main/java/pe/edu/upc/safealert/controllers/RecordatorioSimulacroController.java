@@ -20,7 +20,7 @@ public class RecordatorioSimulacroController {
     @Autowired
     private IRecordatorioSimulacroService rsS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<RecordatorioSimulacroDTO> listarRecordatorioSimulacro() {
         log.info("Solicitud GET para listar recordatorios de simulacro");
         return rsS.list().stream().map(x -> {
@@ -29,7 +29,7 @@ public class RecordatorioSimulacroController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertarRecordatorioSimulacro(@RequestBody RecordatorioSimulacroDTO rsDto) {
         log.info("Solicitud POST para insertar recordatorio de simulacro: {}", rsDto);
@@ -39,21 +39,21 @@ public class RecordatorioSimulacroController {
         log.debug("Recordatorio de simulacro insertado correctamente");
     }
 
-    @GetMapping("/{idRecordatorioSimulacro}")
+    @GetMapping("/list/{idRecordatorioSimulacro}")
     public RecordatorioSimulacroDTO listarId(@PathVariable("idRecordatorioSimulacro") int idRecordatorioSimulacro) {
         log.info("Solicitud GET para obtener recordatorio con ID: {}", idRecordatorioSimulacro);
         ModelMapper m = new ModelMapper();
         return m.map(rsS.listarId(idRecordatorioSimulacro), RecordatorioSimulacroDTO.class);
     }
 
-    @DeleteMapping("/{idRecordatorioSimulacro}")
+    @DeleteMapping("/delete/{idRecordatorioSimulacro}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminarRecordatorioSimulacro(@PathVariable("idRecordatorioSimulacro") int idRecordatorioSimulacro) {
         log.warn("Solicitud DELETE para eliminar recordatorio con ID: {}", idRecordatorioSimulacro);
         rsS.delete(idRecordatorioSimulacro);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificarRecordatorioSimulacro(@RequestBody RecordatorioSimulacroDTO fnDTO) {
         log.info("Solicitud PUT para modificar recordatorio de simulacro: {}", fnDTO);
@@ -62,4 +62,5 @@ public class RecordatorioSimulacroController {
         rsS.update(rs);
         log.debug("Recordatorio de simulacro modificado correctamente");
     }
+
 }

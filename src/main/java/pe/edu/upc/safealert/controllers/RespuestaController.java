@@ -23,7 +23,7 @@ public class RespuestaController {
     @Autowired
     private IRespuestaService reS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<RespuestaDTO> listarrespuesta() {
         log.info("Solicitud GET para listar todas las respuestas");
         return reS.list().stream().map(x -> {
@@ -32,7 +32,7 @@ public class RespuestaController {
         }).collect(Collectors.toList());
     }
 
-    @GetMapping("/BusquedasPorTitulo")
+    @GetMapping("/list/BusquedasPorTitulo")
     public List<RespuestaDTO> buscar(@RequestParam String t) {
         log.info("Solicitud GET para buscar respuestas por título: {}", t);
         return reS.buscarportitulo(t).stream().map(x -> {
@@ -41,7 +41,7 @@ public class RespuestaController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody RespuestaDTO reDto) {
         log.info("Solicitud POST para insertar respuesta: {}", reDto);
@@ -51,21 +51,21 @@ public class RespuestaController {
         log.debug("Respuesta insertada correctamente");
     }
 
-    @GetMapping("/{idRespuesta}")
+    @GetMapping("/list/{idRespuesta}")
     public RespuestaDTO listarId(@PathVariable("idRespuesta") int idRespuesta) {
         log.info("Solicitud GET para obtener respuesta por ID: {}", idRespuesta);
         ModelMapper m = new ModelMapper();
         return m.map(reS.listarId(idRespuesta), RespuestaDTO.class);
     }
 
-    @DeleteMapping("/{idRespuesta}")
+    @DeleteMapping("/delete/{idRespuesta}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idRespuesta") int idRespuesta) {
         log.warn("Solicitud DELETE para eliminar respuesta con ID: {}", idRespuesta);
         reS.delete(idRespuesta);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody RespuestaDTO reDTO) {
         log.info("Solicitud PUT para modificar respuesta: {}", reDTO);
@@ -75,7 +75,7 @@ public class RespuestaController {
         log.debug("Respuesta modificada correctamente");
     }
 
-    @GetMapping("/CantidadRespuestasPorUsuario")
+    @GetMapping("/list/CantidadRespuestasPorUsuario")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<ContarRespuestaDTO> cantidadRespuestasPorUsuario() {
         log.info("Solicitud GET para contar respuestas por rol de administrador");
@@ -92,7 +92,7 @@ public class RespuestaController {
         return dtoLista;
     }
 
-    @GetMapping("/CantidadRespuestasPorComentario")
+    @GetMapping("/list/CantidadRespuestasPorComentario")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<CantidadRespuestaxComentarioDTO> cantidadRespuestas() {
         log.info("Solicitud GET para contar respuestas por comentario");

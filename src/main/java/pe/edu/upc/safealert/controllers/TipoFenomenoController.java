@@ -20,7 +20,7 @@ public class TipoFenomenoController {
     @Autowired
     private TipoFenomenoServiceImplement tS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<TipoFenomenoDTO> listartipofenomeno() {
         log.info("Solicitud GET para listar todos los tipos de fenómeno");
         return tS.listar().stream().map(x -> {
@@ -29,7 +29,7 @@ public class TipoFenomenoController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody TipoFenomenoDTO tfDTO) {
         log.info("Solicitud POST para insertar tipo de fenómeno: {}", tfDTO);
@@ -39,21 +39,21 @@ public class TipoFenomenoController {
         log.debug("Tipo de fenómeno insertado correctamente");
     }
 
-    @GetMapping("/{idTipoFenomeno}")
+    @GetMapping("/list/{idTipoFenomeno}")
     public TipoFenomenoDTO listarId(@PathVariable("idTipoFenomeno") int idTipoFenomeno) {
         log.info("Solicitud GET para obtener tipo de fenómeno con ID: {}", idTipoFenomeno);
         ModelMapper m = new ModelMapper();
         return m.map(tS.listarId(idTipoFenomeno), TipoFenomenoDTO.class);
     }
 
-    @DeleteMapping("/{idTipoFenomeno}")
+    @DeleteMapping("/delete/{idTipoFenomeno}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idTipoFenomeno") int idTipoFenomeno) {
         log.warn("Solicitud DELETE para eliminar tipo de fenómeno con ID: {}", idTipoFenomeno);
         tS.delete(idTipoFenomeno);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody TipoFenomenoDTO tfDTO) {
         log.info("Solicitud PUT para modificar tipo de fenómeno: {}", tfDTO);

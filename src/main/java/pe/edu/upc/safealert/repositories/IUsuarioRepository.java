@@ -19,6 +19,10 @@ public interface IUsuarioRepository extends JpaRepository<Usuario, Integer> {
             nativeQuery = true)
     public List<String[]> findUsuariosEnZonasDeAltoRiesgo();
 
+    public Usuario findByUsername(String username);
+
+    public boolean existsByUsername(String username);
+
     public Usuario findOneByUsername(String username);
 
 

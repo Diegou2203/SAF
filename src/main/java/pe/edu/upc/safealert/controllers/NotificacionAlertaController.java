@@ -22,7 +22,7 @@ public class NotificacionAlertaController {
     @Autowired
     private INotificacionAlertaService naS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<NotificacionAlertaDTO> listarSimulacros() {
         log.info("Solicitud GET para listar notificaciones de alerta");
         return naS.list().stream().map(x -> {
@@ -31,7 +31,7 @@ public class NotificacionAlertaController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody NotificacionAlertaDTO naDTO) {
         log.info("Solicitud POST para insertar notificación de alerta: {}", naDTO);
@@ -41,7 +41,7 @@ public class NotificacionAlertaController {
         log.debug("Notificación de alerta insertada correctamente");
     }
 
-    @GetMapping("/{idNotificacionAlerta}")
+    @GetMapping("/list/{idNotificacionAlerta}")
     public NotificacionAlertaDTO listarPorId(@PathVariable("idNotificacionAlerta") int idNotificacionAlerta) {
         log.info("Solicitud GET para obtener notificación con ID: {}", idNotificacionAlerta);
         ModelMapper modelMapper = new ModelMapper();
@@ -49,14 +49,14 @@ public class NotificacionAlertaController {
         return naDTO;
     }
 
-    @DeleteMapping("/{idNotificacionAlerta}")
+    @DeleteMapping("/delete/{idNotificacionAlerta}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idNotificacionAlerta") int idNotificacionAlerta) {
         log.warn("Solicitud DELETE para eliminar notificación con ID: {}", idNotificacionAlerta);
         naS.delete(idNotificacionAlerta);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     public void modificar(@RequestBody NotificacionAlertaDTO naDTO) {
         log.info("Solicitud PUT para modificar notificación de alerta: {}", naDTO);
         ModelMapper modelMapper = new ModelMapper();
@@ -65,7 +65,7 @@ public class NotificacionAlertaController {
         log.debug("Notificación de alerta modificada correctamente");
     }
 
-    @GetMapping("/CantidadNotificacionesRevisadasPorUsuario")
+    @GetMapping("/list/CantidadNotificacionesRevisadasPorUsuario")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<CantidadNotificacionxUserDTO> cantidadNotificaciones() {
         log.info("Solicitud GET para obtener cantidad de notificaciones revisadas por usuario");

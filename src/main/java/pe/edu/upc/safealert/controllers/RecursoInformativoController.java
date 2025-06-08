@@ -22,7 +22,7 @@ public class RecursoInformativoController {
     @Autowired
     private IRecursoInformativoService riS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<RecursoInformativoDTO> listarRecursosInformativos() {
         log.info("Solicitud GET para listar todos los recursos informativos");
         return riS.list().stream().map(x -> {
@@ -31,7 +31,7 @@ public class RecursoInformativoController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody RecursoInformativoDTO riDTO) {
         log.info("Solicitud POST para insertar recurso informativo: {}", riDTO);
@@ -41,21 +41,21 @@ public class RecursoInformativoController {
         log.debug("Recurso informativo insertado correctamente");
     }
 
-    @GetMapping("/{idRecursoInformativo}")
+    @GetMapping("/list/{idRecursoInformativo}")
     public RecursoInformativoDTO listarPorId(@PathVariable("idRecursoInformativo") int idRecursoInformativo) {
         log.info("Solicitud GET para obtener recurso informativo con ID: {}", idRecursoInformativo);
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(riS.listarId(idRecursoInformativo), RecursoInformativoDTO.class);
     }
 
-    @DeleteMapping("/{idRecursoInformativo}")
+    @DeleteMapping("/delete/{idRecursoInformativo}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminarPorId(@PathVariable("idRecursoInformativo") int idRecursoInformativo) {
         log.warn("Solicitud DELETE para eliminar recurso informativo con ID: {}", idRecursoInformativo);
         riS.delete(idRecursoInformativo);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody RecursoInformativoDTO riDTO) {
         log.info("Solicitud PUT para modificar recurso informativo: {}", riDTO);
@@ -65,7 +65,7 @@ public class RecursoInformativoController {
         log.debug("Recurso informativo modificado correctamente");
     }
 
-    @GetMapping("/CantidadRecursosPorUsuario")
+    @GetMapping("/list/CantidadRecursosPorUsuario")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<CantidadRecursoxUsuarioDTO> cantidadRecursos() {
         log.info("Solicitud GET para obtener cantidad de recursos informativos por usuario");

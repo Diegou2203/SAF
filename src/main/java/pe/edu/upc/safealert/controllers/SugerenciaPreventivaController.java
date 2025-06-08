@@ -20,7 +20,7 @@ public class SugerenciaPreventivaController {
     @Autowired
     private ISugerenciaPreventivaService spS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<SugerenciaPreventivaDTO> listarSugerenciapreventiva() {
         log.info("Solicitud GET para listar todas las sugerencias preventivas");
         return spS.list().stream().map(x -> {
@@ -29,7 +29,7 @@ public class SugerenciaPreventivaController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertarSugerenciaPreventiva(@RequestBody SugerenciaPreventivaDTO spDto) {
         log.info("Solicitud POST para insertar sugerencia preventiva: {}", spDto);
@@ -39,21 +39,21 @@ public class SugerenciaPreventivaController {
         log.debug("Sugerencia preventiva insertada correctamente");
     }
 
-    @GetMapping("/{idSugerenciaPreventiva}")
+    @GetMapping("/list/{idSugerenciaPreventiva}")
     public SugerenciaPreventivaDTO listarId(@PathVariable("idSugerenciaPreventiva") int idSugerenciaPreventiva) {
         log.info("Solicitud GET para obtener sugerencia preventiva con ID: {}", idSugerenciaPreventiva);
         ModelMapper m = new ModelMapper();
         return m.map(spS.listarId(idSugerenciaPreventiva), SugerenciaPreventivaDTO.class);
     }
 
-    @DeleteMapping("/{idSugerenciaPreventiva}")
+    @DeleteMapping("/delete/{idSugerenciaPreventiva}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminarSugerenciaPreventiva(@PathVariable("idSugerenciaPreventiva") int idSugerenciaPreventiva) {
         log.warn("Solicitud DELETE para eliminar sugerencia preventiva con ID: {}", idSugerenciaPreventiva);
         spS.delete(idSugerenciaPreventiva);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificarSugerenciaPreventiva(@RequestBody SugerenciaPreventivaDTO spDTO) {
         log.info("Solicitud PUT para modificar sugerencia preventiva: {}", spDTO);

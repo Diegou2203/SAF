@@ -23,7 +23,7 @@ public class FenomenoNaturalController {
     @Autowired
     private IFenomenoNaturalService fnS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<FenomenoNaturalDTO> listarFenomenos() {
         log.info("Solicitud GET para listar todos los fenómenos naturales");
         return fnS.list().stream().map(x -> {
@@ -32,7 +32,7 @@ public class FenomenoNaturalController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void insertar(@RequestBody FenomenoNaturalDTO fNDto) {
         log.info("Solicitud POST para insertar fenómeno natural: {}", fNDto);
@@ -43,21 +43,21 @@ public class FenomenoNaturalController {
     }
 
     // GET: obtener fenómeno natural por ID
-    @GetMapping("/{idFenomenoNatural}")
+    @GetMapping("/list/{idFenomenoNatural}")
     public FenomenoNaturalDTO listarId(@PathVariable("idFenomenoNatural") int idFenomenoNatural) {
         log.info("Solicitud GET para obtener fenómeno natural con ID: {}", idFenomenoNatural);
         ModelMapper m = new ModelMapper();
         return m.map(fnS.listarId(idFenomenoNatural), FenomenoNaturalDTO.class);
     }
 
-    @DeleteMapping("/{idFenomenoNatural}")
+    @DeleteMapping("/delete/{idFenomenoNatural}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void eliminar(@PathVariable("idFenomenoNatural") int idFenomenoNatural) {
         log.warn("Solicitud DELETE para eliminar fenómeno natural con ID: {}", idFenomenoNatural);
         fnS.delete(idFenomenoNatural);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     @PreAuthorize("hasAuthority('ADMIN')")
     public void modificar(@RequestBody FenomenoNaturalDTO fnDTO) {
         log.info("Solicitud PUT para modificar fenómeno natural: {}", fnDTO);
@@ -68,7 +68,7 @@ public class FenomenoNaturalController {
     }
 
     // GET: obtener cantidad de fenómenos por ubicación
-    @GetMapping("/CantidadFenomenosNaturalesPorUbicacion")
+    @GetMapping("/list/CantidadFenomenosNaturalesPorUbicacion")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<CantidadUbicacionxFDTO> cantidadFenomeno() {
         log.info("Solicitud GET para obtener cantidad de fenómenos por ubicación");
@@ -85,7 +85,7 @@ public class FenomenoNaturalController {
     }
 
     // GET: obtener histórico de fenómenos por intensidad
-    @GetMapping("/HistoricoPorIntensidad")
+    @GetMapping("/list/HistoricoPorIntensidad")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<HistoricoFenomenosDTO> obtenerHistoricoPorIntensidad() {
         log.info("Solicitud GET para obtener histórico de fenómenos por intensidad");

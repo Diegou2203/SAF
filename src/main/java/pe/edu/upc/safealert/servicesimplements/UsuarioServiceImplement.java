@@ -42,4 +42,16 @@ public class UsuarioServiceImplement implements IUsuarioService {
     public List<String[]> findUsuariosEnZonasDeAltoRiesgo() {
         return uR.findUsuariosEnZonasDeAltoRiesgo();
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return uR.existsByUsername(username);
+    }
+
+    @Override
+    public boolean isUsernameDuplicatedOnUpdate(String username, int idUsuario) {
+        Usuario existente = uR.findByUsername(username);
+        return existente != null && existente.getIdUsuario() != idUsuario;
+    }
+
 }

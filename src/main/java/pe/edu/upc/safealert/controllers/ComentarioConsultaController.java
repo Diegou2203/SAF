@@ -41,7 +41,7 @@ public class ComentarioConsultaController {
     }
 
     // GET: obtener comentario por ID
-    @GetMapping("/{idComentario}")
+    @GetMapping("/list/{idComentario}")
     public ComentarioConsultaDTO listarId(@PathVariable("idComentario") int idComentario) {
         log.info("Solicitud GET para obtener comentario con ID: {}", idComentario);
         ModelMapper m = new ModelMapper();
@@ -49,13 +49,13 @@ public class ComentarioConsultaController {
         return coDTO;
     }
 
-    @DeleteMapping("/{idComentario}")
+    @DeleteMapping("/delete/{idComentario}")
     public void eliminar(@PathVariable("idComentario") int idComentario) {
         log.warn("Solicitud DELETE para eliminar comentario con ID: {}", idComentario);
         coS.delete(idComentario);
     }
 
-    @PutMapping("/modify")
+    @PutMapping("/put")
     public void modificar(@RequestBody ComentarioConsultaDTO coDTO) {
         log.info("Solicitud PUT para modificar comentario: {}", coDTO);
         ModelMapper m = new ModelMapper();
@@ -65,7 +65,7 @@ public class ComentarioConsultaController {
     }
 
     // GET: cantidad de comentarios por usuario
-    @GetMapping("/CantidadesComentariosPorUsuario")
+    @GetMapping("/list/CantidadesComentariosPorUsuario")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<ContarComentarioDTO> cantidadPorComentario() {
         log.info("Solicitud GET para obtener cantidad de comentarios por usuario");

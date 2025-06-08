@@ -19,7 +19,7 @@ public class RolController {
     @Autowired
     private IRolService rS;
 
-    @GetMapping
+    @GetMapping("/list")
     public List<RolDTO> listarRol() {
         log.info("Solicitud GET para listar todos los roles");
         return rS.list().stream().map(x -> {
@@ -28,7 +28,7 @@ public class RolController {
         }).collect(Collectors.toList());
     }
 
-    @PostMapping
+    @PostMapping("/insert")
     public void insertarRol(@RequestBody RolDTO RDto) {
         log.info("Solicitud POST para insertar un nuevo rol: {}", RDto);
         ModelMapper modelMapper = new ModelMapper();
@@ -37,14 +37,14 @@ public class RolController {
         log.debug("Rol insertado correctamente");
     }
 
-    @GetMapping("/{idRol}")
+    @GetMapping("/list/{idRol}")
     public RolDTO listarId(@PathVariable("idRol") int idRol) {
         log.info("Solicitud GET para obtener rol por ID: {}", idRol);
         ModelMapper m = new ModelMapper();
         return m.map(rS.listarId(idRol), RolDTO.class);
     }
 
-    @PutMapping
+    @PutMapping("/put")
     public void modificarRol(@RequestBody RolDTO RDto) {
         log.info("Solicitud PUT para modificar un rol: {}", RDto);
         ModelMapper m = new ModelMapper();
@@ -53,7 +53,7 @@ public class RolController {
         log.debug("Rol modificado correctamente");
     }
 
-    @DeleteMapping("/{idRol}")
+    @DeleteMapping("/delete/{idRol}")
     public void eliminarRol(@PathVariable("idRol") int idRol) {
         log.info("Solicitud DELETE para eliminar un rol: {}", idRol);
         rS.delete(idRol);
